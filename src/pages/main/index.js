@@ -31,6 +31,12 @@ class Main extends Component {
 
   //   this.setState({data: response.data})
   // }
+
+  handleDetails = id => {
+    const {navigation} = this.props;
+
+    navigation.navigate('About', {id});
+  };
   render() {
     const {data, search} = this.state;
 
@@ -52,7 +58,8 @@ class Main extends Component {
               <View style={{flexDirection: 'column'}}>
                 <Title>{item.mission_name}</Title>
                 <TextYear>{item.launch_year}</TextYear>
-                <ButtonSaberMais onPress={() => alert(item.flight_number)}>
+                <ButtonSaberMais
+                  onPress={() => this.handleDetails(item.flight_number)}>
                   <ButtonSaberMaisText>SABER MAIS</ButtonSaberMaisText>
                 </ButtonSaberMais>
               </View>
