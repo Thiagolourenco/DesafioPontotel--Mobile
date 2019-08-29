@@ -40,13 +40,14 @@ export const OrbitAbout = styled.Text`
 export const ImageLogo = styled.Image`
   width: 55px;
   height: 59px;
-  margin-top: 40px;
-  margin-left: 50px;
+  margin-top: 5px;
+  margin-left: 80px;
 `;
 
 export const Details = styled.View`
   margin-top: 40px;
   margin-left: 20px;
+  margin-right: 10px;
 `;
 
 export const DetailsTitle = styled.Text`

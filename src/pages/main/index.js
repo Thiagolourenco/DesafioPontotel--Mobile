@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Button, FlatList, Text, TouchableOpacity} from 'react-native';
 
 import api from '../../services/api';
 
@@ -26,11 +26,13 @@ class Main extends Component {
     this.setState({data: response.data});
   }
 
-  // handleSubmit = (name) => {
-  //   const response = await api.get('launches')
+  // handleSubmit = async () => {
+  //   const {search} = this.state;
 
-  //   this.setState({data: response.data})
-  // }
+  //   const response = await api.get(`launches/${search}`);
+
+  //   this.setState({data: response});
+  // };
 
   handleDetails = id => {
     const {navigation} = this.props;
@@ -48,10 +50,16 @@ class Main extends Component {
           placeholderTextColor="#fff"
           onChangeText={text => this.setState({search: text})}
           returnKeyType="send"
-          // onSubmitEditing={this.handleSubmit}
+          onSubmitEditing={this.handleSubmit}
         />
+
+        <TouchableOpacity onPress={this.handleSubmit}>
+          <Text>Enviar</Text>
+        </TouchableOpacity>
+
         <FlatList
           data={data}
+          keyExtractor={data.id}
           renderItem={({item}) => (
             <Content key={item.flight_number}>
               <Img source={{uri: item.links.mission_patch}} />

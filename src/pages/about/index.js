@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text, View} from 'react-native';
+import {TouchableOpacity, Text, View, FlatList, Linking} from 'react-native';
 import {
   Container,
   IconArrow,
@@ -34,46 +34,39 @@ class About extends Component {
   };
 
   async componentDidMount() {
-    // const {navigation} = this.props;
-    // const item = navigation.getParam('id');
+    const {navigation} = this.props;
+    const item = navigation.getParam('id');
 
-    // const response = await api.get(`launches/{{${item.data}}}`);
+    const response = await api.get(`launches/${item}`);
 
-    // this.setState({data: response.data});
-    const response = await api.get('launches/1');
     this.setState({user: response.data});
+    // const response = await api.get('launches/1');
+    // this.setState({user: response.data});
   }
 
   render() {
     const {user} = this.state;
+
     return (
       <Container>
         <TouchableOpacity activeOpacity={0.9} onPress={this.handleGoback}>
           <IconArrow source={arrowBack} />
         </TouchableOpacity>
-        {user.map(users => (
-          <Content key={users.flight_number}>
-            <View>
-              <TitleAbout>ABOUT</TitleAbout>
-              <NameAbout>
-                NAME: {users.second_stage.payloads.payload_id}
-              </NameAbout>
-              <Nationality>
-                NATIONALITY: {users.second_stage.payloads.nationality}{' '}
-              </Nationality>
-              <TypeAbout>
-                TYPE: {users.second_stage.payloads.payload_type}
-              </TypeAbout>
-              <OrbitAbout>
-                ORBIT: {users.second_stage.payloads.orbit}
-              </OrbitAbout>
-            </View>
-            <ImageLogo source={{uri: users.links.mission_patch}} />
-          </Content>
-        ))}
-
+        <Content>
+          <View>
+            <NameAbout>NAME: {user.mission_name}</NameAbout>
+            <NameAbout>YEAR: {user.launch_year}</NameAbout>
+          </View>
+          <ImageLogo source={example} />
+        </Content>
+        <Details>
+          <DetailsTitle>Details</DetailsTitle>
+          <DetailrText>{user.details}</DetailrText>
+        </Details>
         <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => Linking.openURL(user.links.article_link)}>
             <Article>ACESSE O ARTIGO</Article>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7}>
