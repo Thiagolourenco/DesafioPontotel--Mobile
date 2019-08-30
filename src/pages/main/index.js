@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {View, Button, FlatList, Text, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
+import ListActions from '../../store/ducks/list';
 import api from '../../services/api';
 
 import {
@@ -17,13 +20,13 @@ import {
 
 class Main extends Component {
   state = {
-    data: [],
+    // data: [],
     search: '',
   };
   async componentDidMount() {
-    const response = await api.get('launches');
+    const {getListRequest} = this.props;
 
-    this.setState({data: response.data});
+    getListRequest();
   }
 
   // handleSubmit = async () => {
@@ -40,6 +43,7 @@ class Main extends Component {
     navigation.navigate('About', {id});
   };
   render() {
+    const {list} = this.props;
     const {data, search} = this.state;
 
     return (
@@ -58,8 +62,8 @@ class Main extends Component {
         </TouchableOpacity>
 
         <FlatList
-          data={data}
-          keyExtractor={data.id}
+          data={list.data}
+          keyExtractor={item => String(item.id)}
           renderItem={({item}) => (
             <Content key={item.flight_number}>
               <Img source={{uri: item.links.mission_patch}} />
@@ -82,4 +86,15 @@ class Main extends Component {
 Main.navigationOptions = {
   header: null,
 };
-export default Main;
+
+const mapStateToProps = state => ({
+  list: state.list,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(ListActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Main);

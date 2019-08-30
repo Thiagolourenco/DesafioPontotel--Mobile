@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, Text, View, FlatList, Linking} from 'react-native';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
+import ListActions from '../../store/ducks/list';
 import {
   Container,
   IconArrow,
@@ -34,18 +38,21 @@ class About extends Component {
   };
 
   async componentDidMount() {
-    const {navigation} = this.props;
+    const {navigation, getListIdRequest} = this.props;
     const item = navigation.getParam('id');
 
-    const response = await api.get(`launches/${item}`);
+    getListIdRequest(item);
+    // const response = await api.get(`launches/${item}`);
 
-    this.setState({user: response.data});
+    // this.setState({user: response.data});
     // const response = await api.get('launches/1');
     // this.setState({user: response.data});
   }
 
   render() {
-    const {user} = this.state;
+    const {list, navigation} = this.props;
+    const item = navigation.getParam('id');
+    const i = item - 1;
 
     return (
       <Container>
@@ -54,19 +61,19 @@ class About extends Component {
         </TouchableOpacity>
         <Content>
           <View>
-            <NameAbout>NAME: {user.mission_name}</NameAbout>
-            <NameAbout>YEAR: {user.launch_year}</NameAbout>
+            <NameAbout>NAME: {list.data[i].mission_name}</NameAbout>
+            <NameAbout>YEAR: {list.data[i].launch_year}</NameAbout>
           </View>
-          <ImageLogo source={example} />
+          <ImageLogo source={{uri: list.data[i].links.mission_patch}} />
         </Content>
         <Details>
           <DetailsTitle>Details</DetailsTitle>
-          <DetailrText>{user.details}</DetailrText>
+          <DetailrText>{list.data[i].details}</DetailrText>
         </Details>
         <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => Linking.openURL(user.links.article_link)}>
+            onPress={() => Linking.openURL(list.data[i].links.article_link)}>
             <Article>ACESSE O ARTIGO</Article>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7}>
@@ -82,4 +89,14 @@ About.navigationOptions = {
   header: null,
 };
 
-export default About;
+const mapStateToProps = state => ({
+  list: state.list,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(ListActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(About);
