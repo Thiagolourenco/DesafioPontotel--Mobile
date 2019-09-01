@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Button, FlatList, Text, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {SearchBar} from 'react-native-elements';
 
 import ListActions from '../../store/ducks/list';
 import api from '../../services/api';
@@ -19,51 +20,58 @@ import {
 } from './style';
 
 class Main extends Component {
-  state = {
-    // data: [],
-    search: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      search: '',
+    };
+
+    this.arrayHolder = [];
+  }
+
   async componentDidMount() {
+    const response = await api.get('launches');
+    this.setState({data: response.data});
+
     const {getListRequest} = this.props;
 
     getListRequest();
   }
 
-  // handleSubmit = async () => {
-  //   const {search} = this.state;
+  handleSubmit = text => {
+    const filterName = this.state.data.filter(name => {
+      let nameLowerCase = name.mission_name.toLowerCase();
 
-  //   const response = await api.get(`launches/${search}`);
+      let searchLowerCase = text.toLowerCase();
 
-  //   this.setState({data: response});
-  // };
+      return nameLowerCase.indexOf(searchLowerCase) > -1;
+    });
+
+    this.setState({data: filterName});
+  };
 
   handleDetails = id => {
     const {navigation} = this.props;
 
     navigation.navigate('About', {id});
   };
+
   render() {
     const {list} = this.props;
-    const {data, search} = this.state;
+    const {search, data} = this.state;
 
     return (
       <Container>
         <Input
-          value={search}
           placeholder="Coloque um nome para pesquisar"
           placeholderTextColor="#fff"
-          onChangeText={text => this.setState({search: text})}
+          onChangeText={text => this.handleSubmit(text)}
           returnKeyType="send"
-          onSubmitEditing={this.handleSubmit}
         />
 
-        <TouchableOpacity onPress={this.handleSubmit}>
-          <Text>Enviar</Text>
-        </TouchableOpacity>
-
         <FlatList
-          data={list.data}
-          keyExtractor={item => String(item.id)}
+          data={data}
           renderItem={({item}) => (
             <Content key={item.flight_number}>
               <Img source={{uri: item.links.mission_patch}} />
@@ -77,6 +85,7 @@ class Main extends Component {
               </View>
             </Content>
           )}
+          keyExtractor={(item, index) => index.toString()}
         />
       </Container>
     );

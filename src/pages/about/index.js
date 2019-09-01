@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {TouchableOpacity, Text, View, FlatList, Linking} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import VideoPlayer from 'react-native-video-player';
 
 import ListActions from '../../store/ducks/list';
 import {
@@ -21,6 +22,7 @@ import {
   IconVideo,
 } from './style';
 import api from '../../services/api';
+import Modal from '../../components/modal';
 
 import arrowBack from '../../assets/left-chevron.png';
 import example from '../../assets/example.png';
@@ -29,12 +31,23 @@ import youtube from '../../assets/youtube.png';
 class About extends Component {
   state = {
     user: [],
+    width: undefined,
+    height: undefined,
+    visible: false,
   };
 
   handleGoback = () => {
     const {navigation} = this.props;
 
     navigation.goBack();
+  };
+
+  onOpenModal = () => {
+    this.setState({visible: true});
+  };
+
+  closeModal = () => {
+    this.setState({visible: false});
   };
 
   async componentDidMount() {
@@ -51,6 +64,7 @@ class About extends Component {
 
   render() {
     const {list, navigation} = this.props;
+    const {visible} = this.state;
     const item = navigation.getParam('id');
     const i = item - 1;
 
@@ -76,9 +90,21 @@ class About extends Component {
             onPress={() => Linking.openURL(list.data[i].links.article_link)}>
             <Article>ACESSE O ARTIGO</Article>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity activeOpacity={0.7} onPress={this.onOpenModal}>
             <IconVideo source={youtube} />
           </TouchableOpacity>
+          <Modal visible={visible} onRequestClose={() => {}}>
+            <VideoPlayer
+              endWithThumbmail
+              thumbnail={{uri: list.data[i].links.video_link}}
+              video={{uri: list.data[i].links.video_link}}
+              autoplay
+              // ref={r => (this.player = r)}
+            />
+            <TouchableOpacity onPress={this.closeModal}>
+              <Text>Fechar</Text>
+            </TouchableOpacity>
+          </Modal>
         </View>
       </Container>
     );
