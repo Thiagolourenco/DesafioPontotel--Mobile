@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {TouchableOpacity, Text, View, Linking, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-video';
 
 import ListActions from '../../store/ducks/list';
 import {
@@ -89,7 +89,7 @@ class About extends Component {
             onPress={() => Linking.openURL(list.data[i].links.article_link)}>
             <Article>ACESSE O ARTIGO</Article>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} onPress={this.onOpenModal}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL(list.data[i].links.video_link)}>
             <IconVideo source={youtube} />
           </TouchableOpacity>
           <Modal visible={visible} onRequestClose={() => {}}>
@@ -98,12 +98,18 @@ class About extends Component {
               style={{marginLeft: 340, marginBottom: 20}}>
               <Image source={remove} style={{width: 15, height: 15}} />
             </TouchableOpacity>
-            <VideoPlayer
-              endWithThumbmail
-              thumbnail={{uri: list.data[i].links.video_link}}
-              video={{uri: list.data[i].links.video_link}}
-              autoplay
-              // ref={r => (this.player = r)}
+            <Video
+              source={{uri: list.data[i].links.video_link}}
+              style={{
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                width: 200,
+                height: 200,
+              }}
+              // resizeMode={'cover'}
+              repeat={true}
             />
           </Modal>
         </View>
