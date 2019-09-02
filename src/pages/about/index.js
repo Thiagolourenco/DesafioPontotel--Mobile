@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text, View, FlatList, Linking} from 'react-native';
+import {TouchableOpacity, Text, View, Linking, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import VideoPlayer from 'react-native-video-player';
@@ -21,11 +21,10 @@ import {
   Article,
   IconVideo,
 } from './style';
-import api from '../../services/api';
 import Modal from '../../components/modal';
 
 import arrowBack from '../../assets/left-chevron.png';
-import example from '../../assets/example.png';
+import remove from '../../assets/remove.png';
 import youtube from '../../assets/youtube.png';
 
 class About extends Component {
@@ -94,6 +93,11 @@ class About extends Component {
             <IconVideo source={youtube} />
           </TouchableOpacity>
           <Modal visible={visible} onRequestClose={() => {}}>
+            <TouchableOpacity
+              onPress={this.closeModal}
+              style={{marginLeft: 340, marginBottom: 20}}>
+              <Image source={remove} style={{width: 15, height: 15}} />
+            </TouchableOpacity>
             <VideoPlayer
               endWithThumbmail
               thumbnail={{uri: list.data[i].links.video_link}}
@@ -101,9 +105,6 @@ class About extends Component {
               autoplay
               // ref={r => (this.player = r)}
             />
-            <TouchableOpacity onPress={this.closeModal}>
-              <Text>Fechar</Text>
-            </TouchableOpacity>
           </Modal>
         </View>
       </Container>
