@@ -34,7 +34,6 @@ export const Content = styled.View`
   height: 100px;
   border-radius: 10px;
   margin-top: 40px;
-  /* justify-content: center; */
   align-items: center;
   flex-direction: row;
 `;
@@ -43,6 +42,10 @@ export const Img = styled.Image`
   height: 59px;
   width: 55px;
   margin-left: 20px;
+`;
+
+export const ContentView = styled.View`
+  flex-direction: column;
 `;
 
 export const Title = styled.Text`

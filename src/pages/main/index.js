@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Button,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
@@ -24,6 +17,7 @@ import {
   ButtonSaberMaisText,
   HeaderSearch,
   IconSearch,
+  ContentView,
 } from './style';
 import iconSearch from '../../assets/search.png';
 
@@ -44,7 +38,7 @@ class Main extends Component {
     getListRequest();
   }
 
-  handleSubmit = text => {
+  handleSubmit = async text => {
     const filterName = this.state.data.filter(name => {
       let nameLowerCase = name.mission_name.toLowerCase();
 
@@ -83,14 +77,14 @@ class Main extends Component {
           renderItem={({item}) => (
             <Content key={item.flight_number}>
               <Img source={{uri: item.links.mission_patch}} />
-              <View style={{flexDirection: 'column'}}>
+              <ContentView>
                 <Title>{item.mission_name}</Title>
                 <TextYear>{item.launch_year}</TextYear>
                 <ButtonSaberMais
                   onPress={() => this.handleDetails(item.flight_number)}>
                   <ButtonSaberMaisText>SABER MAIS</ButtonSaberMaisText>
                 </ButtonSaberMais>
-              </View>
+              </ContentView>
             </Content>
           )}
           keyExtractor={(item, index) => index.toString()}

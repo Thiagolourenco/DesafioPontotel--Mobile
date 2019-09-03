@@ -52,3 +52,8 @@ export const Article = styled.Text`
 export const IconVideo = styled.Image`
   margin-top: 45px;
 `;
+
+export const FooterButtons = styled.View`
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
