@@ -16,24 +16,7 @@ export const Content = styled.View`
   margin-left: 20px;
 `;
 
-export const TitleAbout = styled.Text`
-  font-size: 20px;
-  margin-bottom: 15px;
-`;
-
 export const NameAbout = styled.Text`
-  font-size: 16px;
-`;
-
-export const Nationality = styled.Text`
-  font-size: 16px;
-`;
-
-export const TypeAbout = styled.Text`
-  font-size: 16px;
-`;
-
-export const OrbitAbout = styled.Text`
   font-size: 16px;
 `;
 

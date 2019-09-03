@@ -6,15 +6,26 @@ export const Container = styled.View`
   align-items: center;
 `;
 
-export const Input = styled.TextInput`
+export const HeaderSearch = styled.View`
   height: 58px;
   width: 93%;
-  padding: 10px;
   background-color: rgba(0, 0, 0, 0.5);
-  font-size: 17px;
-  color: #fff;
   border-radius: 10px;
   margin-top: 20px;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 15px;
+`;
+
+export const Input = styled.TextInput`
+  padding: 10px;
+  font-size: 17px;
+  color: #fff;
+`;
+
+export const IconSearch = styled.Image`
+  width: 20px;
+  height: 20px;
 `;
 
 export const Content = styled.View`

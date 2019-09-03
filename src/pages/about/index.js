@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text, View, Linking, Image} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  View,
+  Linking,
+  Image,
+  WebView,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Video from 'react-native-video';
@@ -9,11 +16,7 @@ import {
   Container,
   IconArrow,
   Content,
-  TitleAbout,
   NameAbout,
-  Nationality,
-  TypeAbout,
-  OrbitAbout,
   ImageLogo,
   Details,
   DetailrText,
@@ -54,12 +57,11 @@ class About extends Component {
     const item = navigation.getParam('id');
 
     getListIdRequest(item);
-    // const response = await api.get(`launches/${item}`);
-
-    // this.setState({user: response.data});
-    // const response = await api.get('launches/1');
-    // this.setState({user: response.data});
   }
+
+  renderWebView = () => {
+    return <WebView source={{uri: ''}} />;
+  };
 
   render() {
     const {list, navigation} = this.props;
@@ -89,7 +91,9 @@ class About extends Component {
             onPress={() => Linking.openURL(list.data[i].links.article_link)}>
             <Article>ACESSE O ARTIGO</Article>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL(list.data[i].links.video_link)}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => Linking.openURL(list.data[i].links.video_link)}>
             <IconVideo source={youtube} />
           </TouchableOpacity>
           <Modal visible={visible} onRequestClose={() => {}}>

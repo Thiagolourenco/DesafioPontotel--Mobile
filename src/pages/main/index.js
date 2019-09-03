@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
-import {View, Button, FlatList, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Button,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {SearchBar} from 'react-native-elements';
 
 import ListActions from '../../store/ducks/list';
 import api from '../../services/api';
@@ -14,20 +20,19 @@ import {
   Img,
   Title,
   TextYear,
-  Details,
   ButtonSaberMais,
   ButtonSaberMaisText,
+  HeaderSearch,
+  IconSearch,
 } from './style';
+import iconSearch from '../../assets/search.png';
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      search: '',
     };
-
-    this.arrayHolder = [];
   }
 
   async componentDidMount() {
@@ -59,16 +64,19 @@ class Main extends Component {
 
   render() {
     const {list} = this.props;
-    const {search, data} = this.state;
+    const {data} = this.state;
 
     return (
       <Container>
-        <Input
-          placeholder="Coloque um nome para pesquisar"
-          placeholderTextColor="#fff"
-          onChangeText={text => this.handleSubmit(text)}
-          returnKeyType="send"
-        />
+        <HeaderSearch>
+          <IconSearch source={iconSearch} />
+          <Input
+            placeholder="Coloque um nome para pesquisar"
+            placeholderTextColor="#fff"
+            onChangeText={text => this.handleSubmit(text)}
+            returnKeyType="send"
+          />
+        </HeaderSearch>
 
         <FlatList
           data={data}
